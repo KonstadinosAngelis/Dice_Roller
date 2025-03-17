@@ -1,12 +1,7 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Step 1: Create a basic dice roller that can roll a d20 (DONE)
+Step 2: Make a reusable function that can roll the other dice (DONE)
+Step 3: Handle multiple dice rolls (IN PROGRESS)
+Step 4: Add adv/disadv
+Step 5: Add modifiers
+Step 6: Story history of rolls
+Step 7: Show a graph distribution of the average dice numbers

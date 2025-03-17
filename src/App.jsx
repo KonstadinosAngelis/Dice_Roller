@@ -1,33 +1,39 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [result, setResult] = useState(0);
+  const [sides, setSides] = useState(20);
+
+  const rollDice = () => {
+    let rolledNum = Math.floor(Math.random() * sides) + 1;
+    
+    setResult(rolledNum);
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <main>
+      <header>
+        <h1>D&D Dice Roller</h1>
+      </header>
+      <section className="card">
+          <h2>Number Rolled: {result}!</h2>
+          <h3>Rolling a D{sides}</h3>
+
+            <section className="diceSelection">
+              <button onClick={() => setSides(4)}>D4</button>
+              <button onClick={() => setSides(6)}>D6</button>
+              <button onClick={() => setSides(8)}>D8</button>
+              <button onClick={() => setSides(10)}>D10</button>
+              <button onClick={() => setSides(12)}>D12</button>
+              <button onClick={() => setSides(20)}>D20</button>
+            </section>
+          <button onClick={() => rollDice(sides)}>
+            Roll!
+          </button>
+      </section>
+    </main>
     </>
   )
 }
