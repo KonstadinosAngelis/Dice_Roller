@@ -4,11 +4,16 @@ import './App.css'
 function App() {
   const [result, setResult] = useState(0);
   const [sides, setSides] = useState(20);
+  const [amount, setAmount] = useState(3);
 
   const rollDice = () => {
-    let rolledNum = Math.floor(Math.random() * sides) + 1;
-    
-    setResult(rolledNum);
+    let total = 0;
+    //Rolls the number of dice set by the user
+    for (let i = amount; i > 0; i--) {
+      let rolledNum = Math.floor(Math.random() * sides) + 1;
+      total += rolledNum;      
+    }
+    setResult(total);
   }
 
   return (
@@ -20,7 +25,7 @@ function App() {
       <section className="card">
           <h2>Number Rolled: {result}!</h2>
           <h3>Rolling a D{sides}</h3>
-
+          <input type='text'>Test</input>
             <section className="diceSelection">
               <button onClick={() => setSides(4)}>D4</button>
               <button onClick={() => setSides(6)}>D6</button>
