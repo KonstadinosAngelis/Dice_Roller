@@ -32,6 +32,8 @@ function App() {
     setResult(runningTotal);
   }
 
+
+
   // DEPRICATED VERSION OF THE DICE ROLLER
   // const rollDice = () => {
   //   let total = 0;
@@ -59,7 +61,7 @@ function App() {
             placeholder="Enter in format 2d6 or 1d20"
             onKeyDown={(e) => {
               if(e.key === "Enter") {
-                console.log(regexPattern)
+                console.log(authenticateInput())
                 if(diceRegex.test(e.target.value)) {
                   setAmountOfDice(e.target.value.split("d")[0]);
                   setAmountOfSides(e.target.value.split("d")[1]);
