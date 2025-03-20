@@ -2,9 +2,6 @@ import { use, useState } from 'react'
 import './App.css'
 
 function App() {
-  //Import REGEX 
-  const regexPattern = import.meta.env.VITE_DICE_REGEX;
-  const diceRegex = new RegExp(regexPattern);
 
   //Total Calculated
   const [result, setResult] = useState(0);
@@ -14,27 +11,125 @@ function App() {
 
   //Text user input
   const [diceRollInput, setDiceRollInput] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const rollDice = (userInput) => {
-    let runningTotal = 0;
+  const vallidate = (userInput) => {
+    //Checks for [0-99]d[0-99]
+    const regexCheck = /^([1-9][0-9]?)d([1-9][0-9]?)([+-](?:[0-9]|[1-9][0-9]))?$/i;
 
-    let amountOfDice = userInput.split("d")[0];
-    let amountOfSides = userInput.split("d")[1];
+    let result = regexCheck.test(userInput);
 
-    //Rolls the number of dice set by the user.
-    for (let i = amountOfDice; i > 0; i--) {
-        let rolledNum = Math.floor(Math.random() * amountOfSides) + 1;
-        runningTotal += rolledNum;
+    return true ? result === true : false;
+  }
+
+  //Rolls a X Sided dice Y number of times
+  const rollDice = (numberOfDice, numberOfSides) => {
+    let total = 0;
+    //Rolls the amount of dice inputted and returns the total
+    for (let i = numberOfDice; i > 0; i--) {
+      let rolledNum = Math.floor(Math.random() * numberOfSides) + 1;
+      total += rolledNum;
     }
+    return total;
+  }
 
-    setAmountOfDice(userInput.split("d")[0]);
-    setAmountOfSides(userInput.split("d")[1]);
-    setResult(runningTotal);
+  const rollAdvantage = () => {
+    //Update the UI
+    setAmountOfDice(2);
+    setAmountOfSides(20);
+
+    //Calculate result
+    let result = 0;
+
+    let rollOne = Math.floor(Math.random()* 20) + 1;
+    let rollTwo = Math.floor(Math.random()* 20) + 1;
+    
+    //Compare numbers and return the larger
+    result = rollOne > rollTwo ? rollOne : rollTwo;
+    return result;
+  }
+
+  const rollDisadvantage = () => {
+    //Update the UI
+    setAmountOfDice(2);
+    setAmountOfSides(20);
+
+    //Calculate result
+    let result = 0;
+
+    let rollOne = Math.floor(Math.random()* 20) + 1;
+    let rollTwo = Math.floor(Math.random()* 20) + 1;
+    
+    //Compare numbers and return the smaller
+    result = rollOne < rollTwo ? rollOne : rollTwo;
+    return result;
   }
 
 
+  return (
+    <>
+    <main>
+      <header>
+        <h1>D&D Dice Roller</h1>
+      </header>
+      <section className="card">
+          <h2>Number Rolled: <br></br>{result}!</h2>
+          <p>Type a number of dice to roll and the number of sides each has using the format (2d6, or 1d20 Max 99d99)</p>
+          <p>{errorMessage}</p>
+          <section className='diceEntry'>
+            <input
+              type="text"
+              className='diceInputTextbox'
+              value={diceRollInput}
+              onChange={(e) => setDiceRollInput(e.target.value)}
+              placeholder="Enter in format 2d6 or 1d20"
+              onKeyDown={(e) => {
+                if(e.key === "Enter") {
+                  if(!vallidate(e.target.value)) {
+                    setErrorMessage("Invalid dice format! Use XdY, MAX 99d99+99");
+                    setAmountOfDice(0);
+                    setAmountOfSides(0);
+                    setResult(0);
+                    setDiceRollInput("");
+                  }
+                  else {
+                    setErrorMessage("");
+                    const [diceCount, diceSides] = e.target.value.split("d");
+                    setAmountOfDice(diceCount);
+                    setAmountOfSides(diceSides);
+                    setResult(rollDice(diceCount, diceSides));
+                  }
+                }
+              }}
+              />
+              <div>
+                <button 
+                  className='advantage-disadvantage'
+                  onClick={() => {setResult(rollAdvantage())}}
+                >
+                Advantage</button>
 
-  // DEPRICATED VERSION OF THE DICE ROLLER
+                <button 
+                  className='advantage-disadvantage'
+                  onClick={() => {setResult(rollDisadvantage())}}
+                >
+                Disadvantage</button>
+              </div>
+          </section>
+
+          <h3>Rolling a: D{amountOfSides} {amountOfDice} time(s)</h3>
+          {/* <button onClick={() => rollDice(diceRollInput)}>
+            Roll!
+          </button> */}
+      </section>
+    </main>
+    </>
+  )
+}
+
+export default App
+
+  // DEPRICATED VERSIONS OF THE DICE ROLLER
   // const rollDice = () => {
   //   let total = 0;
   //   //Rolls the number of dice set by the user
@@ -45,54 +140,19 @@ function App() {
   //   setResult(total);
   // }
 
-  return (
-    <>
-    <main>
-      <header>
-        <h1>D&D Dice Roller</h1>
-      </header>
-      <section className="card">
-          <h2>Number Rolled: {result}!</h2>
-          <p>Type a number of dice to roll and the number of sides each has using the format (2d6, or 1d20)</p>
-          <input
-            type="text"
-            value={diceRollInput}
-            onChange={(e) => setDiceRollInput(e.target.value)}
-            placeholder="Enter in format 2d6 or 1d20"
-            onKeyDown={(e) => {
-              if(e.key === "Enter") {
-                console.log(authenticateInput())
-                if(diceRegex.test(e.target.value)) {
-                  setAmountOfDice(e.target.value.split("d")[0]);
-                  setAmountOfSides(e.target.value.split("d")[1]);
-                  rollDice(e.target.value)
-                }
-                else {
-                  alert("Please enter a valid input (100d100 is the max!)")
-                }
-              }
-            }}
-            />
-            <h3>Rolling a: D{amountOfSides} {amountOfDice} time(s)</h3>
-            <section className="diceSelection">
-              <div>
-                <button onClick={() => setAmountOfSides(4)}>D4</button>
-                <button onClick={() => setAmountOfSides(6)}>D6</button>
-                <button onClick={() => setAmountOfSides(8)}>D8</button>
-              </div>
-              <div>
-                <button onClick={() => setAmountOfSides(10)}>D10</button>
-                <button onClick={() => setAmountOfSides(12)}>D12</button>
-                <button onClick={() => setAmountOfSides(20)}>D20</button>
-              </div>
-            </section>
-          <button onClick={() => rollDice(diceRollInput)}>
-            Roll!
-          </button>
-      </section>
-    </main>
-    </>
-  )
-}
+  // const rollDice = (userInput) => {
+  //   let runningTotal = 0;
 
-export default App
+  //   let amountOfDice = userInput.split("d")[0];
+  //   let amountOfSides = userInput.split("d")[1];
+
+  //   setAmountOfDice(userInput.split("d")[0]);
+  //   setAmountOfSides(userInput.split("d")[1]);
+  //   //Rolls the number of dice set by the user.
+  //   for (let i = amountOfDice; i > 0; i--) {
+  //       let rolledNum = Math.floor(Math.random() * amountOfSides) + 1;
+  //       runningTotal += rolledNum;
+  //   }
+
+  //   setResult(runningTotal);
+  // }

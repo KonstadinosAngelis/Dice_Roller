@@ -15,6 +15,33 @@
   align-items: baseline;
 }
 
+.diceEntry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.diceInputTextbox {
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  width: 500px;
+  text-align: center;
+}
+
+.advantage-disadvantage {
+  width: 250px;
+  border: none;
+  outline: none;
+  padding: 10px 15px;
+  margin: 0px 15px;
+  border-radius: 12px;
+}
+
 .card {
-  padding: 2em;
+  padding: 1rem;
 }
